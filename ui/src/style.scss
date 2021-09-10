@@ -70,6 +70,13 @@
 @import "./components/divider/style/divider.scss";
 @import "./components/locale-provider/style/locale-provider.scss";
 
+/* MapGIS Design - IconFont */
+@import "./components/iconfont/style/iconfont.scss";
+
+/* MapGIS Design - Color */
+@import "./components/color/style/color.scss";
+@import "./components/color-picker/style/color-picker.scss";
+
 /* MapGIS Design - Third Lib */
 @import "./components/jsoneditor/style/editor.scss";
 @import "./components/content/style/content.scss";
@@ -86,5 +93,9 @@
 @import "./view/clouddisk/components/upload/style/upload.scss";
 @import "./view/clouddisk/components/select/style/select.scss";
 
+/* MapGIS Design Mapbox Base*/
+@import "./components/map/style/map.scss";
+
 /* MapGIS Design THemePanel */
 @import "./components/themepanel/style/themepanel.scss";
+@import "./components/svgselect/style/svgselect.scss";

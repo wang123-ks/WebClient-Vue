@@ -66,6 +66,7 @@ export { default as MapgisUiRadioButton } from "./components/radio/Button.vue";
 export { default as MapgisUiRate } from "./components/rate/Rate.vue";
 export { default as MapgisUiSelect } from "./components/select/Select.vue";
 export { default as MapgisUiSpriteSelect } from "./components/sprite/Sprite.vue";
+export { default as MapgisUiSvgSelect } from "./components/svgselect/SvgSelect.vue";
 export { default as MapgisUiSelectOption } from "./components/select/SelectOption.vue";
 export { default as MapgisUiSelectOptGroup } from "./components/select/SelectOptGroup.vue";
 export { default as MapgisUiSlider } from "./components/slider/Slider.vue";
@@ -99,6 +100,7 @@ export { default as MapgisUiTableColumn } from "./components/table/Column.vue";
 export { default as MapgisUiTableColumnGroup } from "./components/table/ColumnGroup.vue";
 export { default as MapgisUiTabs } from "./components/tabs/Tabs.vue";
 export { default as MapgisUiTabPane } from "./components/tabs/TabPane.vue";
+export { default as MapgisUiGroupTab } from "./components/tabs/GroupTab.vue";
 export { default as MapgisUiTag } from "./components/tag/Tag.vue";
 export { default as MapgisUiCheckableTag } from "./components/tag/CheckableTag.vue";
 export { default as MapgisUiTimeline } from "./components/timeline/Timeline.vue";
@@ -118,6 +120,11 @@ export { default as MapgisUiSpin } from "./components/spin/Spin.vue";
 export { default as MapgisUiConfigProvider } from "./components/config-provider/ConfigProvider.vue";
 export { default as MapgisUiDivider } from "./components/divider/Divider.vue";
 export { default as MapgisUiLocaleProvider } from "./components/locale-provider/LocaleProvider.vue";
+
+// Color
+export { default as MapgisUiColorsSetting } from "./components/color/ColorsSetting.vue";
+export { default as MapgisUiSketchColorPicker } from "./components/color-picker/SketchColorPicker.vue";
+export { default as MapgisUiColorPicker } from "./components/color-picker/ColorPicker.vue";
 
 // Ribbon
 export { default as MapgisUiRibbonGroup } from "./components/ribbon/RibbonGroup.vue";

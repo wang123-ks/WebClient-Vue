@@ -1,7 +1,8 @@
 // import "ant-design-vue/dist/antd.css";
 import antDirective from "ant-design-vue/es/_util/antDirective";
-
+import vcolorpicker from "vcolorpicker";
 import * as UIComponents from "./component";
+import * as Util from "./util/common";
 
 import { setLayout, setLayoutSettingVisible } from "./util/emit/layout";
 import { setTheme } from "./util/style/theme/set-theme";
@@ -21,6 +22,7 @@ const install = function(Vue, options) {
   setTheme(theme);
   setLayoutSettingVisible(true);
   Vue.use(antDirective);
+  Vue.use(vcolorpicker);
   for (let name in UIComponents) {
     const ui = UIComponents[name];
     Vue.component(ui.options ? ui.options.name : ui.name, ui);
@@ -41,9 +43,11 @@ if (typeof window !== "undefined" && window["Vue"]) {
 }
 
 export * from "./component";
+export { Util };
 
 export { MapgisUiMessage, MapgisUiNotification, ModalInstance };
 export default {
+  Util,
   setTheme,
   setLayout,
   setLayoutSettingVisible,
