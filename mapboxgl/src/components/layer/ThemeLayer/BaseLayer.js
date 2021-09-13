@@ -2373,7 +2373,8 @@ export default {
                         //设置面板分段颜色
                         vm.$refs.themePanel.$_setColors(vm.colors);
                         //设置面板分段复选框
-                        vm.$refs.themePanel.$_setCheckBoxArr(vm.checkBoxArr);                        vm.$refs.themePanel.$_setColors(vm.colors);
+                        vm.$refs.themePanel.$_setCheckBoxArr(vm.checkBoxArr);
+                        vm.$refs.themePanel.$_setColors(vm.colors);
                         //设置面板数据源
                         vm.$refs.themePanel.$_setDataSoure(dataSource);
                     });
@@ -2625,7 +2626,12 @@ export default {
                 }
             }
             allLayerOrder.splice(allLayerOrder.indexOf(layerOrder[0]), layerOrder.length);
-            this.map.setPaintProperty(layerId, this.dataType + "-opacity", 1);
+            let originLayer = themeManager.getLayerProps(layerId, layerId);
+            let opacity = 1;
+            if(originLayer.hasOwnProperty("paint") && originLayer.paint.hasOwnProperty(this.dataType + "-opacity")){
+                opacity = originLayer.paint[this.dataType + "-opacity"];
+            }
+            this.map.setPaintProperty(layerId, this.dataType + "-opacity", opacity);
             this.$refs.themePanel.$_close();
             themeManager.setManagerProps(layerId, undefined);
         },

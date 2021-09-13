@@ -8,31 +8,31 @@ import Feature from "./Feature.vue";
 
 const FillRules = [
   {
-    title: "颜色",
-    icon: "mapgis-yansehecheng",
+    title: "填充颜色",
+    icon: "mapgis-bg-colors",
     type: "color",
     layerprop: "fill-color",
     layertype: "paint",
     default: "#000000"
   },
   {
-    title: "符号",
-    icon: "mapgis-yangshikuguanli",
+    title: "填充符号",
+    icon: "mapgis-Symbols-1",
     type: "sprite",
     layerprop: "fill-pattern",
     layertype: "paint"
   },
   {
     title: "抗锯齿",
-    icon: "mapgis-xianpinghuayidongdian",
+    icon: "mapgis-line",
     type: "boolean",
     layerprop: "fill-antialias",
     layertype: "paint",
     default: true
   },
   {
-    title: "透明度",
-    icon: "mapgis-duibidutiaojie",
+    title: "填充透明",
+    icon: "mapgis-opacity",
     type: "number",
     layerprop: "fill-opacity",
     layertype: "paint",
@@ -42,10 +42,11 @@ const FillRules = [
   },
   {
     title: "边线颜色",
-    icon: "mapgis-yansehecheng",
+    icon: "mapgis-bg-colors",
     type: "color",
     layerprop: "fill-outline-color",
-    layertype: "paint"
+    layertype: "paint",
+    default: "#000000"
   }
 ];
 
