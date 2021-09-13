@@ -109,6 +109,5 @@ export default {
   height: 30px !important;
   margin-left: 11px;
   border-radius: 6px;
-  border: 1px solid rgb(218, 218, 218);
 }
 </style>
