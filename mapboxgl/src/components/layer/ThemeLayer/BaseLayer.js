@@ -2561,7 +2561,8 @@ export default {
                     //隐藏专题图原图层
                     for (let j = 0; j < originLayerIds.length; j++) {
                         vm.$_setOriginPaint(originLayerIds[j]);
-                        vm.map.setPaintProperty(originLayerIds[j], vm.themeType + "-opacity", 0);
+                        let dataType = themeManager.getLayerProps(originLayerIds[j], "dataType");
+                        vm.map.setPaintProperty(originLayerIds[j], dataType + "-opacity", 0);
                     }
                     //屯换添加专题图，并确保顺序正常
                     for (let i = 0; i < layerOrder.length; i++) {
@@ -2671,7 +2672,8 @@ export default {
             let vm = this;
             setTimeout(function () {
                 //隐藏原图层
-                vm.map.setPaintProperty(layerId, vm.dataType + "-opacity", 0);
+                let dataType = themeManager.getLayerProps(layerId, "dataType");
+                vm.map.setPaintProperty(layerId, dataType + "-opacity", 0);
             }, 100);
         },
         $_getNullFields(features, layerId) {
