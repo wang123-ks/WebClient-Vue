@@ -182,6 +182,8 @@ export default {
             //取得下一个图层的ID，没有就是undefined
             this.upLayer = this.$_getUpLayer();
             this.$refs.themePanel.$_setTitle(layerId);
+            //保存图层信息
+            this.$_setLayerInfo(this.layerIdCopy);
             let hasManager = themeManager.hasManager(this.layerIdCopy + this.$_getThemeName());
             if (hasManager) {
                 this.themeType = themeManager.getLayerProps(layerId, "themeType");
@@ -228,8 +230,6 @@ export default {
                     this.$refs.themePanel.$_setDataSoure(dataSource);
                 }
             } else {
-                //保存图层信息
-                this.$_setLayerInfo(this.layerIdCopy);
                 //取得数据
                 this.$_getDataByLayer(layerId, function (features) {
                     //设定数据几何类型
@@ -1174,6 +1174,9 @@ export default {
             };
             if (this.source_layer_Id) {
                 textLayer["source-layer"] = this.source_layer_Id;
+            }
+            if (this.dataType === "line") {
+                textLayer.layout["symbol-placement"] = "line";
             }
             if (!this.map.getLayer(this.layerIdCopy + this.$_getThemeName() + "_注记")) {
                 this.map.addLayer(textLayer, this.upLayer);
