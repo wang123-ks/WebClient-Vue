@@ -1,29 +1,13 @@
 <template>
-  <mapgis-ui-row class="mapgis-property-color">
-    <mapgis-ui-col span="7">
-      <mapgis-ui-iconfont :type="rule.icon" />
-      <span class="mapgis-property-color-left">{{ rule.title }} </span>
-    </mapgis-ui-col>
-    <mapgis-ui-col span="17">
-      <!-- <mapgis-ui-popover v-model="visible" trigger="click"> -->
-
-      <colorPicker
-        v-model="value"
-        class="theme-panel-line-color"
-        @change="onChange"
-      />
-
-      <!-- <mapgis-ui-input v-model="value">
-          <mapgis-ui-button
-            size="small"
-            shape="round"
-            slot="addonAfter"
-            :style="{ background: value }"
-          />
-        </mapgis-ui-input> -->
-      <!-- </mapgis-ui-popover> -->
-    </mapgis-ui-col>
-  </mapgis-ui-row>
+  <!-- <div class="theme-panel-color-outer"> -->
+  <mapgis-ui-button :size="size" :style="{ width: '100%' }">
+    <colorPicker
+      v-model="value"
+      class="mapgis-property-color"
+      @change="onChange"
+    />
+  </mapgis-ui-button>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -35,7 +19,8 @@ export default {
   mixins: [EditMixin],
   components: {},
   props: {
-    rule: Object
+    rule: Object,
+    size: { type: String, default: "small" }
   },
   model: {
     prop: "color",
@@ -56,8 +41,7 @@ export default {
     };
   },
   methods: {
-    onChange(event) {
-      const color = event.hex;
+    onChange(color) {
       const { map, rule, layerid } = this;
       this.$emit("change", color);
       this.value = color;
@@ -78,7 +62,7 @@ export default {
     },
     getValue(id) {
       const { map, layerid, rule } = this;
-      let value = undefined;
+      let value = "#1890FF";
       id = id || layerid;
       if (map && layerid && rule) {
         const { layertype, layerprop } = rule;
@@ -88,27 +72,17 @@ export default {
           value = layer[layertype][layerprop];
         }
       }
+      if (typeof value === "object") {
+        if (
+          value.stops &&
+          value.stops.length > 0 &&
+          value.stops[0].length > 1
+        ) {
+          value = value.stops[0][1];
+        }
+      }
       return value;
     }
   }
 };
 </script>
-
-<style>
-.mapgis-property-color {
-  width: 100%;
-}
-
-.mapgis-property-color-left {
-  height: 30px;
-  line-height: 30px;
-}
-
-.theme-panel-line-color {
-  width: 160px !important;
-  height: 30px !important;
-  margin-left: 11px;
-  border-radius: 6px;
-  border: 1px solid rgb(218, 218, 218);
-}
-</style>
