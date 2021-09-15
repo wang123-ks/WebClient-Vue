@@ -373,10 +373,7 @@ export default {
             }
             let features;
             //从图层取得数据
-            features = this.map.querySourceFeatures(this.source_Id);
-            if (features.length === 0) {
-                features = this.map.queryRenderedFeatures({layers: [layerId]});
-            }
+            features = this.map.queryRenderedFeatures({layers: [layerId]});
             if (this.hasNullProperty.indexOf(layerId) < 0) {
                 this.$_getNullFields(features, layerId);
             }
@@ -853,7 +850,11 @@ export default {
                     let range = dataSourceCopy[length - 1] - dataSourceCopy[0];
                     if (range === 0) {
                         newDataSourceCopy.push(dataSourceCopy[0]);
-                        this.endData = dataSourceCopy[0] + 1;
+                        this.startData = dataSourceCopy[0];
+                        this.$refs.themePanel.startData = this.startData;
+                        this.$refs.themePanel.startDataCopy = this.startData;
+                        themeManager.setExtraData(this.layerIdCopy, this.themeType, "dataSource", newDataSourceCopy);
+                        themeManager.setPanelProps(this.layerIdCopy, this.themeType, "startData", this.startData);
                         return newDataSourceCopy;
                     } else {
                         let rangeSect = range / this.rangeLevel;
@@ -2005,7 +2006,7 @@ export default {
             let paintColor = themeManager.getExtraData(this.layerIdCopy, this.themeType, this.dataType + "-color");
             let length = (paintColor.length - 1) / 2;
             for (let i = 0; i < length; i++) {
-                if (paintColor[2 + i * 2 + 1] >= startData && paintColor[2 + i * 2 + 1] < endData) {
+                if (paintColor[2 + i * 2 + 1] >= startData && paintColor[2 + i * 2 + 1] <= endData) {
                     if (i === 0) {
                         paintColor.splice(2, 1, color);
                     }
@@ -2388,8 +2389,7 @@ export default {
             let dataSource = themeManager.getExtraData(this.layerIdCopy, this.themeType, "dataSource");
             let startData, endData;
             if (index === 0) {
-                startData = themeManager.getExtraData(this.layerIdCopy, this.themeType, "startData");
-                ;
+                startData = themeManager.getPanelProps(this.layerIdCopy, this.themeType, "startData");
                 endData = dataSource[index];
             } else if (index <= dataSource.length - 1) {
                 startData = dataSource[index - 1];
@@ -2433,8 +2433,18 @@ export default {
                 ["linear"],
                 ["get", this.selectValue]
             ];
-            heatmapWeight.push(Number(datas[0]), 0);
-            heatmapWeight.push(Number(datas[datas.length - 1]), 1);
+            if(datas.length === 1){
+                if(Number(datas[0]) === 0){
+                    heatmapWeight.push(0, 0);
+                    heatmapWeight.push(0.1, 1);
+                }else {
+                    heatmapWeight.push(0, 0);
+                    heatmapWeight.push(Number(datas[0]), 1);
+                }
+            }else {
+                heatmapWeight.push(Number(datas[0]), 0);
+                heatmapWeight.push(Number(datas[datas.length - 1]), 1);
+            }
             return heatmapWeight;
         },
         $_getHeatmapColors(gradientHeatColor) {
