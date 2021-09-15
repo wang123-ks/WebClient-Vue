@@ -2433,15 +2433,15 @@ export default {
                 ["linear"],
                 ["get", this.selectValue]
             ];
-            if(datas.length === 1){
-                if(Number(datas[0]) === 0){
+            if (datas.length === 1) {
+                if (Number(datas[0]) === 0) {
                     heatmapWeight.push(0, 0);
                     heatmapWeight.push(0.1, 1);
-                }else {
+                } else {
                     heatmapWeight.push(0, 0);
                     heatmapWeight.push(Number(datas[0]), 1);
                 }
-            }else {
+            } else {
                 heatmapWeight.push(Number(datas[0]), 0);
                 heatmapWeight.push(Number(datas[datas.length - 1]), 1);
             }
@@ -2643,7 +2643,7 @@ export default {
             let originLayer = themeManager.getLayerProps(layerId, layerId);
             let opacity = 1;
             let dataType = themeManager.getLayerProps(layerId, "dataType");
-            if(originLayer.hasOwnProperty("paint") && originLayer.paint.hasOwnProperty(dataType + "-opacity")){
+            if (originLayer.hasOwnProperty("paint") && originLayer.paint.hasOwnProperty(dataType + "-opacity")) {
                 opacity = originLayer.paint[dataType + "-opacity"];
             }
             this.map.setPaintProperty(layerId, dataType + "-opacity", opacity);
@@ -2755,6 +2755,40 @@ export default {
                     }
                 }
             }
+        },
+        $_getLegend(layerId) {
+            let colors, returnColors;
+            switch (this.themeType) {
+                case "uniform":
+                    colors = themeManager.getExtraData(layerId, this.themeType, this.dataType + "-color");
+                    if(colors instanceof Array){
+                        returnColors = colors.slice(2, colors.length - 1);
+                    }else{
+                        returnColors = colors.stops[0];
+                    }
+                    break;
+                case "unique":
+                    colors = themeManager.getExtraData(layerId, this.themeType, this.dataType + "-color");
+                    if(colors instanceof Array){
+                        returnColors = colors.slice(2, colors.length - 1);
+                    }else{
+                        returnColors = colors.stops[0];
+                    }
+                    break;
+                case "range":
+                    colors = themeManager.getExtraData(layerId, this.themeType, this.dataType + "-color");
+                    returnColors = colors.slice(3, colors.length);
+                    break;
+                case "heatmap":
+                    colors = themeManager.getExtraData(layerId, this.themeType, "heatmap-color");
+                    returnColors = colors.slice(3, colors.length - 1);
+                    break;
+                case "symbol":
+                    colors = themeManager.getPanelProps(layerId, this.themeType, "icon-url");
+                    returnColors = colors;
+                    break;
+            }
+            return returnColors;
         }
     }
 };
