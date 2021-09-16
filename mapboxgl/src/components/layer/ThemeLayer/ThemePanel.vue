@@ -42,7 +42,7 @@
           </div>
         </mapgis-ui-row>
       </div>
-      <div class="theme-panel-options" :style="{height: dataType !== 'circle' ? '712px' : '618px'}">
+      <div class="theme-panel-options">
         <!--字段信息-->
         <mapgis-ui-collapse accordion>
           <mapgis-ui-collapse-panel key="2" header="字段信息">
@@ -2290,7 +2290,7 @@ export default {
 
 .theme-panel-options {
   width: 300px;
-  min-height: 618px;
+  min-height: 593px;
   margin-top: 8px;
   padding-top: 1px;
   margin-left: -4px;
