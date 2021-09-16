@@ -9,10 +9,19 @@
       class="mapgis-mvt-legend-row"
       slot-scope="item"
     >
-      <img class="mapgis-mvt-legend-image" :src="item.imageData" />
-      <span class="mapgis-mvt-legend-label">{{
-        item.label.substring(0, 20)
-      }}</span>
+      <template v-if="item.imageData">
+        <img class="mapgis-mvt-legend-image" :src="item.imageData" />
+        <span class="mapgis-mvt-legend-label">{{
+          item.label.substring(0, 20)
+        }}</span>
+      </template>
+      <template v-else-if="item.color">
+        <div
+          class="mapgis-mvt-legend-color"
+          :style="{ background: item.color }"
+        />
+        <span class="mapgis-mvt-legend-theme-label">{{ item.layerName }}</span>
+      </template>
     </mapgis-ui-list-item>
   </mapgis-ui-list>
 </template>
@@ -27,6 +36,10 @@ export default {
     mode: {
       type: String,
       default: "flat" // flat group
+    },
+    max: {
+      type: Number,
+      default: 100
     }
   },
   data() {
@@ -41,7 +54,7 @@ export default {
   },
   methods: {
     getLegend() {
-      const { map, mode } = this;
+      /* const { map, mode } = this;
       if (!map) return;
       let mvt = new MvtLegend();
       let legends = mvt.getLegend({ map });
@@ -57,10 +70,20 @@ export default {
         case "group":
           break;
       }
-      this.legends = array;
+      this.legends = array; */
     },
-    refresh() {
-      this.getLegend();
+    refresh(legends) {
+      if (legends) {
+        if (legends.length > this.max) {
+          let step = Math.floor(legends.length / this.max);
+          legends = legends.filter((l, i) => {
+            return i % step == 0;
+          });
+        }
+        this.legends = legends;
+      } else {
+        this.getLegend(legends);
+      }
     },
     hide() {
       if (this.$refs.collapsecard) {
@@ -86,11 +109,25 @@ export default {
   display: inline;
 }
 
+.mapgis-mvt-legend-theme-label {
+  width: 160px;
+  margin-left: 8px;
+}
+
+.mapgis-mvt-legend-color {
+  width: 24px;
+  height: 24px;
+}
+
 .mapgis-mvt-legend-row > .mapgis-ui-list-item {
   width: 200px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.mapgis-ui-list-grid .mapgis-ui-col > .mapgis-ui-list-item {
+  display: flex !important;
 }
 
 .mapgis-mvt-legend-image {
