@@ -1075,7 +1075,7 @@ export default {
   data() {
     return {
       //是否显示面板
-      showPanel: true,
+      showPanel: false,
       //标题
       title: undefined,
       //数据类型，circle、line、fill
