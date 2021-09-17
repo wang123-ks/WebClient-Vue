@@ -112,6 +112,9 @@ export default {
 .mapgis-mvt-legend-theme-label {
   width: 160px;
   margin-left: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .mapgis-mvt-legend-color {
