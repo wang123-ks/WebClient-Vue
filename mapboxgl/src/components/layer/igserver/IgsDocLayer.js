@@ -114,8 +114,15 @@ export default {
       let params = [];
 
       params.push("f=" + this.f);
+
       let guid = newGuid();
-      params.push(("guid=" + this.guid) | guid);
+      // 修改说明：问题原因：1.igs地图文档服务，如果指定了显示的图层列表参数，则必须传guid参数或通过cookie唯一标识某个客户端的访问，
+      // 否则igs会在每一次请求时，都会创建临时的地图文档。
+      // 2.在linux环境下，每次创建新的临时地图文档出图，会导致出图失败。
+      // 3.webClient-vuer的mapgis-igs-doc-layer组件，拼接guid的语句写法有误，是导致该bug的直接原因。
+      // params.push(("guid=" + this.guid) | guid);该种写法存在问题,无法得到预想的结果
+      // 修改人：马原野 2021年09月17日
+      params.push("guid=" + (this.guid ? this.guid : guid));
 
       let width, height;
       width = height = this.tileSize;
