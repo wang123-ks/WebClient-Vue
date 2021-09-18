@@ -128,7 +128,6 @@ class ZondyThemeManager {
                         "gradient-color":
                             "#D53E4F,#FB8D59,#FEE08B,#FFFFBF,#E6F598,#99D594,#3288BD",
                         "fill-color": "#FFFFFF",
-                        "fill-pattern": undefined,
                         "fill-opacity": 100,
                         "fill-translate": [0, 0],
                         "fill-outline-color": "#000000",

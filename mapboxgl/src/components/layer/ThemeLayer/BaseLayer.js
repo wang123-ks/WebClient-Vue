@@ -162,7 +162,6 @@ export default {
     },
     methods: {
         $_addThemeLayer(themeType, layerId) {
-            this.$refs.themePanel.$_show();
             let vm = this;
             if (themeType) {
                 //初始化专题图存储对象
@@ -232,6 +231,9 @@ export default {
                 //抛出更新图例事件
                 let legends = this.$_getLegend(this.layerIdCopy);
                 this.$emit("updateLegend", legends);
+                this.$refs.themePanel.$_show();
+                //将原图层opacity设置为0，而不是设置原图层的visibility，因为隐藏了某些时候queryRenderFeature会取不到数据
+                this.map.setPaintProperty(this.layerIdCopy, this.dataType + "-opacity", 0);
             } else {
                 //取得数据
                 this.$_getDataByLayer(layerId, function (features) {
@@ -356,10 +358,11 @@ export default {
                     //抛出更新图例事件
                     let legends = vm.$_getLegend(vm.layerIdCopy);
                     vm.$emit("updateLegend", legends);
+                    vm.$refs.themePanel.$_show();
+                    //将原图层opacity设置为0，而不是设置原图层的visibility，因为隐藏了某些时候queryRenderFeature会取不到数据
+                    vm.map.setPaintProperty(vm.layerIdCopy, vm.dataType + "-opacity", 0);
                 });
             }
-            //将原图层opacity设置为0，而不是设置原图层的visibility，因为隐藏了某些时候queryRenderFeature会取不到数据
-            this.map.setPaintProperty(this.layerIdCopy, this.dataType + "-opacity", 0);
         },
         /**
          * 拥护已经加载了一张地图，通过mapbox的queryRenderFeature方法获取数据
@@ -1636,18 +1639,21 @@ export default {
                             //重新取得数据
                             dataSource = vm.$_setDataSource(features, field, "unique");
                             //设置专题图颜色
-                            paintColor = vm.$_setUniformColors("#EE4C5A", dataSource, field);
+                            vm.currentGradient = "#EE4C5A";
+                            paintColor = vm.$_setUniformColors(vm.currentGradient, dataSource, field);
                             vm.$_setPaintPropertyToExtra(vm.layerIdCopy, vm.layerIdCopy + vm.$_getThemeName(), vm.dataType + "-color", paintColor);
                             break;
                         case "unique":
                             //重新取得数据
                             dataSource = vm.$_setDataSource(features, field, "unique");
                             //设置专题图颜色
+                            vm.currentGradient = gradients[0].key;
                             paintColor = vm.$_setUniqueColors(vm.currentGradient, dataSource, field);
                             vm.$_setPaintPropertyToExtra(vm.layerIdCopy, vm.layerIdCopy + vm.$_getThemeName(), vm.dataType + "-color", paintColor);
                             break;
                         case "range":
                             //设置分段等级
+                            vm.currentGradient = gradients[0].key;
                             let rangeLevel = vm.currentGradient.split(",").length;
                             themeManager.setExtraData(vm.layerIdCopy, vm.themeType, "rangeLevel", rangeLevel);
                             vm.rangeLevel = rangeLevel;
@@ -1676,7 +1682,8 @@ export default {
                             let heatmapWeight = vm.$_getWeightArr(dataSource);
                             vm.$_setPaintPropertyToExtra(vm.layerIdCopy, vm.layerIdCopy + vm.$_getThemeName(), "heatmap-weight", heatmapWeight);
                             //颜色仅需平均分配，但是初始颜色要是浅色系，颜色从浅到深
-                            let heatmapColor = vm.$_getHeatmapColors(gradientHeatColor[0].key);
+                            vm.currentGradient = gradientHeatColor[0].key;
+                            let heatmapColor = vm.$_getHeatmapColors(vm.currentGradient);
                             vm.$_setPaintPropertyToExtra(vm.layerIdCopy, vm.layerIdCopy + vm.$_getThemeName(), "heatmap-color", heatmapColor);
                             //半径比较重要，半径越大相对的渐变效果越宽，通视设置不同的缩放等级，会有模糊效果
                             let heatmapRadius = vm.$_getHeatmapRadius(40);
@@ -2189,7 +2196,7 @@ export default {
         $_yCircleTranslateChanged(translate) {
             this.$_setTranslate(translate, 1);
             let arr = themeManager.getPanelProps(this.layerIdCopy, this.themeType, "circle-translate");
-            themeManager.setPanelProps(this.layerIdCopy, this.themeType, "circle-translate", [arr[0], -arr[1]]);
+            themeManager.setPanelProps(this.layerIdCopy, this.themeType, "circle-translate", [Number(arr[0]), Number(arr[1]) * -1]);
         },
         $_iconTranslateYChanged(translate) {
             let vm = this;
@@ -2199,18 +2206,18 @@ export default {
                 return vm.$_editTranslate(translate, 1);
             });
             let arr = themeManager.getPanelProps(this.layerIdCopy, this.themeType, "icon-translate");
-            themeManager.setPanelProps(this.layerIdCopy, this.themeType, "icon-translate", [arr[0], -arr[1]]);
+            themeManager.setPanelProps(this.layerIdCopy, this.themeType, "icon-translate", [Number(arr[0]), Number(arr[1]) * -1]);
         },
         $_lineTranslateYChanged(translate) {
             this.$_setTranslate(translate, 1);
             let arr = themeManager.getPanelProps(this.layerIdCopy, this.themeType, "line-translate");
-            themeManager.setPanelProps(this.layerIdCopy, this.themeType, "line-translate", [arr[0], -arr[1]]);
+            themeManager.setPanelProps(this.layerIdCopy, this.themeType, "line-translate", [Number(arr[0]), Number(arr[1]) * -1]);
         },
         $_fillTranslateYChanged(translate) {
             this.$_setTranslate(translate, 1);
             this.$_setOutLineTranslate(translate, 1);
             let arr = themeManager.getPanelProps(this.layerIdCopy, this.themeType, "fill-translate");
-            themeManager.setPanelProps(this.layerIdCopy, this.themeType, "fill-translate", [arr[0], -arr[1]]);
+            themeManager.setPanelProps(this.layerIdCopy, this.themeType, "fill-translate", [Number(arr[0]), Number(arr[1]) * -1]);
         },
         $_circleStrokeColorChanged(color) {
             this.$_setPaintProperty(this.layerIdCopy, this.layerIdCopy + this.$_getThemeName(), "circle-stroke-color", color);
@@ -2818,12 +2825,20 @@ export default {
                     break;
             }
             if (returnColors) {
-                let length = returnColors.length / 2;
-                for (let i = 0; i < length; i++) {
+                if(this.themeType !== "symbol"){
+                    let length = returnColors.length / 2;
+                    for (let i = 0; i < length; i++) {
+                        legends.push({
+                            layerName: returnColors[i * 2],
+                            layerType: this.dataType,
+                            color: returnColors[i * 2 + 1]
+                        });
+                    }
+                }else {
                     legends.push({
-                        layerName: returnColors[i * 2],
-                        layerType: this.dataType,
-                        color: returnColors[i * 2 + 1]
+                        layerName: this.layerIdCopy + "_符号",
+                        layerType: "symbol",
+                        color: returnColors
                     });
                 }
             }
