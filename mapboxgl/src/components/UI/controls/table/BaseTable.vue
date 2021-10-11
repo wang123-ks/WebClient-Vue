@@ -1,7 +1,7 @@
 <template>
   <div v-show="hasFeatures">
     <div class="mapgis-table-collapse-wrapper">
-      <mapgis-ui-div class="mapgis-table-collapse" v-show="!visible">
+      <mapgis-ui-div class="mapgis-table-collapse" v-show="!visible && dataSourceCopy.length > 0">
         <div @click="showTable">
           <mapgis-ui-iconfont type="mapgis-shuxingjiancha" />属性表
         </div>
@@ -276,10 +276,7 @@ export default {
   },
   methods: {
     clearTable(){
-      this.deletTable = true;
-      this.$nextTick(function () {
-        this.$_initSource([], true);
-      })
+      this.dataSourceCopy = [];
     },
     $_initTable() {
       if (this.pagination) {
