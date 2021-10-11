@@ -275,6 +275,12 @@ export default {
     this.$emit("loaded", this);
   },
   methods: {
+    clearTable(){
+      this.deletTable = true;
+      this.$nextTick(function () {
+        this.$_initSource([]);
+      })
+    },
     $_initTable() {
       if (this.pagination) {
         this.paginationCopy = this.pagination;
