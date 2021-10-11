@@ -278,7 +278,7 @@ export default {
     clearTable(){
       this.deletTable = true;
       this.$nextTick(function () {
-        this.$_initSource([]);
+        this.$_initSource([], true);
       })
     },
     $_initTable() {
@@ -332,14 +332,14 @@ export default {
       return nullProperties;
     },
     //将传入的数据转化为mapgis-ui-table识别的数据
-    $_initSource(dataSource) {
+    $_initSource(dataSource, noError) {
       dataSource = dataSource || this.dataSource;
       this.dataSourceOrigin = dataSource;
       this.sortBack = {};
       if(this.rowSelection){
         this.rowSelection.selectedRowKeys = [];
       }
-      if(!dataSource || !dataSource.features || dataSource.features.length === 0){
+      if(!noError && (!dataSource || !dataSource.features || dataSource.features.length === 0)){
         this.hasFeatures = false;
         this.$emit("createTableFailed","属性表","没有数据!");
         this.$emit("createLayerFailed",{
