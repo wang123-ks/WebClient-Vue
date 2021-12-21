@@ -12,7 +12,7 @@
         </div>
       </mapgis-ui-col>
       <mapgis-ui-col :span="wrapperCol" class="right-panel">
-        <mapgis-ui-select v-model="selected" size="default">
+        <mapgis-ui-select v-model="selected" size="default" :disabled="isDisabled" placeholder="placeholder">
           <mapgis-ui-select-option v-for="item in selectOptions" :key="item">
             {{ item }}
           </mapgis-ui-select-option>
@@ -51,6 +51,13 @@ export default {
     transparent: {
       type: Boolean,
       default: false
+    },
+    isDisabled:{
+      type: Boolean,
+      default:false
+    },
+    placeholder:{
+      type:String
     }
   },
   watch: {
