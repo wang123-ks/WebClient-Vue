@@ -7,3 +7,7 @@
     line-height: 27px;
   }
 }
+
+@include b(tooltip-inner) {
+  background-color: $icon-color-hover !important;
+}
